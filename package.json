@@ -1,6 +1,6 @@
 {
 	"name": "n8n-nodes-anny",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "n8n nodes for the Anny booking platform",
 	"license": "MIT",
 	"homepage": "https://anny.co",
