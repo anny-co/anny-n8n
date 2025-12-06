@@ -29,7 +29,6 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 ## Credentials
 
 - Uses OAuth2 with preconfigured scopes; only pick your region (anny.co, anny.eu, staging, or local) and complete the OAuth flow.
-- Optionally provide your tenant UUID to lock the auth request to a specific tenant.
 - The credential tests by fetching your user profile from the selected region.
 
 ## Compatibility

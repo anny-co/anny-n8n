@@ -47,10 +47,6 @@ export class AnnyTrigger implements INodeType {
 				description: 'The events to listen to',
 				options: [
 					{
-						name: 'Booking Cancelled',
-						value: 'bookings.cancelled',
-					},
-					{
 						name: 'Booking Checked In',
 						value: 'bookings.checked-in',
 					},

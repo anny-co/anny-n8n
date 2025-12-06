@@ -73,12 +73,6 @@ export class AnnyOAuth2Api implements ICredentialType {
 				'={{$self["region"] === "co" ? "https://auth.anny.co" : $self["region"] === "eu" ? "https://auth.anny.eu" : $self["region"] === "local" ? "https://auth.anny.test" : "https://auth.staging.anny.co"}}/oauth/token',
 		},
 		{
-			displayName: 'Auth URI Query Parameters',
-			name: 'authQueryParameters',
-			type: 'hidden',
-			default: '={{$self["tenantUuid"] ? "tenant=" + $self["tenantUuid"] : ""}}',
-		},
-		{
 			displayName: 'Authentication',
 			name: 'authentication',
 			type: 'hidden',
