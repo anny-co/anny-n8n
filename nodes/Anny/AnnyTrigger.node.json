@@ -1,0 +1,9 @@
+{
+	"node": "n8n-nodes-base.annyTrigger",
+	"nodeVersion": "1.0",
+	"codexVersion": "1.0",
+	"categories": ["Sales"],
+	"subcategories": {
+		"Sales": ["Booking & Scheduling"]
+	}
+}
