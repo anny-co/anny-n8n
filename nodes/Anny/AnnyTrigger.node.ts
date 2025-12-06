@@ -17,11 +17,10 @@ export class AnnyTrigger implements INodeType {
 		group: ['trigger'],
 		version: 1,
 		subtitle: '={{$parameter["events"].join(", ")}}',
-		description: 'Starts the workflow when Anny events occur',
+		description: 'Starts the workflow when anny events occur',
 		defaults: {
 			name: 'Anny Trigger',
 		},
-		usableAsTool: true,
 		inputs: [],
 		outputs: [NodeConnectionTypes.Main],
 		credentials: [
@@ -47,6 +46,10 @@ export class AnnyTrigger implements INodeType {
 				default: [],
 				description: 'The events to listen to',
 				options: [
+					{
+						name: 'Booking Cancelled',
+						value: 'bookings.cancelled',
+					},
 					{
 						name: 'Booking Checked In',
 						value: 'bookings.checked-in',
@@ -87,9 +90,38 @@ export class AnnyTrigger implements INodeType {
 						name: 'Customer Updated',
 						value: 'customers.updated',
 					},
+					{
+						name: 'Invoice Created',
+						value: 'invoices.created',
+					},
+					{
+						name: 'Invoice Deleted',
+						value: 'invoices.deleted',
+					},
+					{
+						name: 'Invoice Finalized',
+						value: 'invoices.finalized',
+					},
+					{
+						name: 'Invoice Updated',
+						value: 'invoices.updated',
+					},
+					{
+						name: 'Order Created',
+						value: 'orders.created',
+					},
+					{
+						name: 'Order Deleted',
+						value: 'orders.deleted',
+					},
+					{
+						name: 'Order Updated',
+						value: 'orders.updated',
+					},
 				],
 			},
 		],
+		usableAsTool: true,
 	};
 
 	webhookMethods = {
@@ -97,7 +129,6 @@ export class AnnyTrigger implements INodeType {
 			async checkExists(this: IHookFunctions): Promise<boolean> {
 				const staticData = this.getWorkflowStaticData('node');
 				if (staticData.webhookId) {
-					// Verify webhook still exists on Anny side
 					try {
 						await annyApiRequest.call(
 							this,
@@ -106,7 +137,6 @@ export class AnnyTrigger implements INodeType {
 						);
 						return true;
 					} catch {
-						// Webhook doesn't exist anymore, clean up
 						delete staticData.webhookId;
 						return false;
 					}
@@ -124,7 +154,7 @@ export class AnnyTrigger implements INodeType {
 						type: 'webhook-subscriptions',
 						attributes: {
 							url: webhookUrl,
-							name: `n8n Workflow ${workflowId}`,
+							name: `n8n Trigger - Workflow ${workflowId}`,
 							events: events,
 						},
 					},
@@ -139,10 +169,18 @@ export class AnnyTrigger implements INodeType {
 						body,
 					);
 
-					const webhookId = (response.data as IDataObject)?.id as string;
+					let webhookId: string | undefined;
+					if (response.data && typeof response.data === 'object') {
+						const data = response.data as IDataObject;
+						webhookId = data.id as string;
+					} else if (response.id) {
+						webhookId = response.id as string;
+					}
+
 					if (!webhookId) {
 						throw new NodeApiError(this.getNode(), {
-							message: 'No webhook ID returned from Anny API',
+							message: 'No webhook ID returned from anny API',
+							description: `Response structure: ${JSON.stringify(response)}`,
 						});
 					}
 
@@ -152,7 +190,7 @@ export class AnnyTrigger implements INodeType {
 					return true;
 				} catch (error) {
 					throw new NodeApiError(this.getNode(), {
-						message: 'Failed to create Anny webhook',
+						message: 'Failed to create anny webhook',
 						description: (error as Error).message,
 					});
 				}
@@ -163,7 +201,6 @@ export class AnnyTrigger implements INodeType {
 				const webhookId = staticData.webhookId as string;
 
 				if (!webhookId) {
-					// Nothing to delete
 					return true;
 				}
 
@@ -174,7 +211,7 @@ export class AnnyTrigger implements INodeType {
 						`/api/v1/webhook-subscriptions/${webhookId}`,
 					);
 				} catch {
-					// Webhook might already be deleted, continue cleanup
+					// Webhook might already be deleted
 				}
 
 				delete staticData.webhookId;
@@ -187,7 +224,6 @@ export class AnnyTrigger implements INodeType {
 		const body = this.getBodyData();
 		const headers = this.getHeaderData();
 
-		// Return the webhook payload to the workflow
 		return {
 			workflowData: [
 				[

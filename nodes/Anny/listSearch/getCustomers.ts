@@ -2,30 +2,16 @@ import type {
 	ILoadOptionsFunctions,
 	INodeListSearchItems,
 	INodeListSearchResult,
+	IDataObject,
 } from 'n8n-workflow';
 import { annyApiRequest } from '../shared/transport';
 
 interface CustomerItem {
 	id: string;
-	attributes?: {
-		email?: string;
-		first_name?: string;
-		last_name?: string;
-		name?: string;
-	};
 	email?: string;
-	first_name?: string;
-	last_name?: string;
+	given_name?: string;
+	family_name?: string;
 	name?: string;
-}
-
-interface ApiResponse {
-	data?: CustomerItem[];
-	meta?: {
-		current_page?: number;
-		last_page?: number;
-		total?: number;
-	};
 }
 
 export async function getCustomers(
@@ -45,31 +31,32 @@ export async function getCustomers(
 		qs['filter[search]'] = filter;
 	}
 
-	let responseData: ApiResponse = { data: [] };
+	let items: CustomerItem[] = [];
+	let meta: IDataObject = {};
 
 	try {
-		responseData = await annyApiRequest.call(this, 'GET', '/api/v1/customers', qs) as ApiResponse;
+		const response = await annyApiRequest.call(this, 'GET', '/api/v1/customers', qs) as IDataObject;
+		items = (response.data || response) as CustomerItem[];
+		meta = (response.meta || {}) as IDataObject;
 	} catch {
 		// Return empty if request fails
 	}
 
-	const items = responseData.data || [];
-	const results: INodeListSearchItems[] = items.map((item: CustomerItem) => {
-		const attrs = item.attributes || item;
-		const email = attrs.email || '';
-		const firstName = attrs.first_name || '';
-		const lastName = attrs.last_name || '';
-		const name = attrs.name || `${firstName} ${lastName}`.trim();
-		
+	const results: INodeListSearchItems[] = (Array.isArray(items) ? items : []).map((item: CustomerItem) => {
+		const email = item.email || '';
+		const firstName = item.given_name || '';
+		const lastName = item.family_name || '';
+		const name = item.name || `${firstName} ${lastName}`.trim();
+
 		return {
 			name: name ? `${name} (${email})` : email,
 			value: item.id,
 		};
 	});
 
-	const hasMore = responseData.meta?.current_page !== undefined && 
-		responseData.meta?.last_page !== undefined &&
-		responseData.meta.current_page < responseData.meta.last_page;
+	const hasMore = meta.current_page !== undefined && 
+		meta.last_page !== undefined &&
+		(meta.current_page as number) < (meta.last_page as number);
 	
 	const nextPaginationToken = hasMore ? String(page + 1) : undefined;
 

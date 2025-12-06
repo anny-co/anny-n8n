@@ -2,26 +2,13 @@ import type {
 	ILoadOptionsFunctions,
 	INodeListSearchItems,
 	INodeListSearchResult,
+	IDataObject,
 } from 'n8n-workflow';
 import { annyApiRequest } from '../shared/transport';
 
 interface ServiceItem {
 	id: string;
-	attributes?: {
-		name?: string;
-		description?: string;
-	};
-	name?: string;
-	description?: string;
-}
-
-interface ApiResponse {
-	data?: ServiceItem[];
-	meta?: {
-		current_page?: number;
-		last_page?: number;
-		total?: number;
-	};
+	name: string;
 }
 
 export async function getServices(
@@ -41,28 +28,29 @@ export async function getServices(
 		qs['filter[search]'] = filter;
 	}
 
-	let responseData: ApiResponse = { data: [] };
+	let items: ServiceItem[] = [];
+	let meta: IDataObject = {};
 
 	try {
-		responseData = await annyApiRequest.call(this, 'GET', '/api/v1/services', qs) as ApiResponse;
+		const response = await annyApiRequest.call(this, 'GET', '/api/v1/services', qs) as IDataObject;
+		items = (response.data || response) as ServiceItem[];
+		meta = (response.meta || {}) as IDataObject;
 	} catch {
 		// Return empty if request fails
 	}
 
-	const items = responseData.data || [];
-	const results: INodeListSearchItems[] = items.map((item: ServiceItem) => {
-		const attrs = item.attributes || item;
-		const name = attrs.name || 'Unnamed Service';
-		
+	const results: INodeListSearchItems[] = (Array.isArray(items) ? items : []).map((item: ServiceItem) => {
+		const name = item.name;
+	
 		return {
 			name,
 			value: item.id,
 		};
 	});
 
-	const hasMore = responseData.meta?.current_page !== undefined && 
-		responseData.meta?.last_page !== undefined &&
-		responseData.meta.current_page < responseData.meta.last_page;
+	const hasMore = meta.current_page !== undefined && 
+		meta.last_page !== undefined &&
+		(meta.current_page as number) < (meta.last_page as number);
 	
 	const nextPaginationToken = hasMore ? String(page + 1) : undefined;
 

@@ -13,6 +13,8 @@ export function getBaseUrl(region: string): string {
 			return 'https://b.anny.eu';
 		case 'staging':
 			return 'https://b.staging.anny.co';
+		case 'local':
+			return 'https://anny.test';
 		case 'co':
 		default:
 			return 'https://b.anny.co';
@@ -31,9 +33,10 @@ export async function annyApiRequest(
 	const region = (credentials.region as string) || 'co';
 	const baseUrl = getBaseUrl(region);
 
-	// Add organization ID to query string if available
-	if (credentials.organizationId) {
-		qs.o = credentials.organizationId as string;
+	// Get organization ID from credentials (stored via preAuthentication)
+	const organizationId = credentials.organizationId as string | undefined;
+	if (organizationId) {
+		qs.o = organizationId;
 	}
 
 	const options: IHttpRequestOptions = {

@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Webhook Event",
+  "description": "Envelope posted by anny webhooks. The data field contains the affected resource.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["event", "timestamp", "event_id", "webhook_id", "triggered_at", "data"],
+  "properties": {
+    "event": {
+      "type": "string",
+      "description": "Event identifier such as bookings.created or customers.deleted."
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time when anny generated the event."
+    },
+    "event_id": {
+      "type": "string",
+      "description": "Unique ID of the webhook event."
+    },
+    "webhook_id": {
+      "type": "string",
+      "description": "ID of the webhook subscription inside anny."
+    },
+    "triggered_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Time when the webhook fired."
+    },
+    "data": {
+      "description": "Resource payload for the event.",
+      "oneOf": [
+        { "$ref": "./booking.json" },
+        { "$ref": "./customer.json" },
+        { "$ref": "./resource.json" },
+        { "$ref": "./service.json" },
+        { "$ref": "./order.json" },
+        { "$ref": "./invoice.json" },
+        {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Fallback for other payloads."
+        }
+      ]
+    }
+  }
+}

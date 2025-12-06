@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Booking",
+  "description": "Booking record returned by the anny API.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "status", "start_date", "end_date", "currency", "total"],
+  "properties": {
+    "id": { "type": "string", "description": "Booking identifier." },
+    "type": { "type": "string", "description": "Resource type, usually bookings." },
+    "number": { "type": "string" },
+    "status": { "type": "string" },
+    "is_blocker": { "type": "boolean" },
+    "start_date": { "type": "string", "format": "date-time" },
+    "end_date": { "type": "string", "format": "date-time" },
+    "blocker_start_date": { "type": ["string", "null"], "format": "date-time" },
+    "blocker_end_date": { "type": ["string", "null"], "format": "date-time" },
+    "charged_duration": { "type": ["number", "null"] },
+    "weight": { "type": ["number", "null"] },
+    "is_sequence": { "type": "boolean" },
+    "price_hidden": { "type": "boolean" },
+    "visible_for_customer": { "type": "boolean" },
+    "can_edit": { "type": "boolean" },
+    "currency": { "type": "string" },
+    "tax_rate": { "type": ["number", "null"] },
+    "total": { "type": ["number", "null"] },
+    "is_net_total": { "type": "boolean" },
+    "code": { "type": "string" },
+    "subtotal": { "type": ["number", "null"] },
+    "charged_total": { "type": ["number", "null"] },
+    "charged_subtotal": { "type": ["number", "null"] },
+    "starting_fee": { "type": ["number", "null"] },
+    "description": { "type": ["string", "null"] },
+    "customer_note": { "type": ["string", "null"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "canceled_at": { "type": ["string", "null"], "format": "date-time" },
+    "check_in_date": { "type": ["string", "null"], "format": "date-time" },
+    "check_out_date": { "type": ["string", "null"], "format": "date-time" },
+    "custom_entry_map": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/customEntry" }
+    },
+    "is_series": { "type": "boolean" },
+    "is_series_master": { "type": "boolean" },
+    "series_id": { "type": ["string", "null"] },
+    "series_type": { "type": ["string", "null"] },
+    "note": { "type": ["string", "null"] },
+    "manually_created": { "type": "boolean" },
+    "is_sub_booking": { "type": "boolean" },
+    "has_payment": { "type": "boolean" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "meta": { "$ref": "#/$defs/bookingMeta" },
+    "booking_add_ons": {
+      "type": "array",
+      "items": { "type": "object", "additionalProperties": true }
+    },
+    "customer": { "$ref": "./customer.json" },
+    "resource": { "$ref": "./resource.json" },
+    "service": { "$ref": "./service.json" }
+  },
+  "$defs": {
+    "customEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "value": { "type": ["string", "number", "boolean", "null"] },
+        "formatted_value": { "type": ["string", "number", "boolean", "null"] },
+        "label": { "type": ["string", "null"] },
+        "type": { "type": ["string", "null"] }
+      }
+    },
+    "bookingMeta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "is_anonymous": { "type": "boolean" },
+        "has_personalization": { "type": "boolean" },
+        "personalization_name": { "type": ["string", "null"] },
+        "sequenced_services_label": { "type": ["string", "null"] },
+        "cancelable_until": { "type": ["string", "null"], "format": "date-time" },
+        "has_custom_description": { "type": "boolean" }
+      }
+    }
+  }
+}

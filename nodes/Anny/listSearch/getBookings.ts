@@ -2,28 +2,17 @@ import type {
 	ILoadOptionsFunctions,
 	INodeListSearchItems,
 	INodeListSearchResult,
+	IDataObject,
 } from 'n8n-workflow';
 import { annyApiRequest } from '../shared/transport';
 
 interface BookingItem {
 	id: string;
-	attributes?: {
-		starts_at?: string;
-		ends_at?: string;
-		status?: string;
-	};
-	starts_at?: string;
-	ends_at?: string;
-	status?: string;
-}
-
-interface ApiResponse {
-	data?: BookingItem[];
-	meta?: {
-		current_page?: number;
-		last_page?: number;
-		total?: number;
-	};
+	number: string;
+	description: string;
+	start_date: string;
+	end_date: string;
+	status: string;
 }
 
 export async function getBookings(
@@ -43,29 +32,29 @@ export async function getBookings(
 		qs['filter[search]'] = filter;
 	}
 
-	let responseData: ApiResponse = { data: [] };
+	let items: BookingItem[] = [];
+	let meta: IDataObject = {};
 
 	try {
-		responseData = await annyApiRequest.call(this, 'GET', '/api/v1/bookings', qs) as ApiResponse;
+		const response = await annyApiRequest.call(this, 'GET', '/api/v1/bookings', qs) as IDataObject;
+		items = (response.data || response) as BookingItem[];
+		meta = (response.meta || {}) as IDataObject;
 	} catch {
 		// Return empty if request fails
 	}
 
-	const items = responseData.data || [];
-	const results: INodeListSearchItems[] = items.map((item: BookingItem) => {
-		const attrs = item.attributes || item;
-		const startsAt = attrs.starts_at ? new Date(attrs.starts_at).toLocaleString() : '';
-		const status = attrs.status || '';
+	const results: INodeListSearchItems[] = (Array.isArray(items) ? items : []).map((item: BookingItem) => {
+		const status = item.status || '';
 		
 		return {
-			name: `${startsAt} - ${status}`,
+			name: `${item.number} | ${item.description} | ${status}`,
 			value: item.id,
 		};
 	});
 
-	const hasMore = responseData.meta?.current_page !== undefined && 
-		responseData.meta?.last_page !== undefined &&
-		responseData.meta.current_page < responseData.meta.last_page;
+	const hasMore = meta.current_page !== undefined && 
+		meta.last_page !== undefined &&
+		(meta.current_page as number) < (meta.last_page as number);
 	
 	const nextPaginationToken = hasMore ? String(page + 1) : undefined;
 

@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Customer",
+  "description": "Customer record returned by the anny API.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "uuid", "full_name", "email"],
+  "properties": {
+    "id": { "type": "string", "description": "Customer identifier." },
+    "type": { "type": "string", "description": "Resource type, usually customers." },
+    "uuid": { "type": "string", "description": "Stable UUID of the customer." },
+    "number": { "type": "string" },
+    "locale": { "type": "string" },
+    "title": { "type": ["string", "null"] },
+    "given_name": { "type": ["string", "null"] },
+    "family_name": { "type": ["string", "null"] },
+    "full_name": { "type": "string" },
+    "sex": { "type": ["number", "null"] },
+    "birth_date": { "type": ["string", "null"], "format": "date" },
+    "email": { "type": "string", "format": "email" },
+    "email_status": { "type": ["string", "null"] },
+    "mobile": { "type": ["string", "null"] },
+    "phone": { "type": ["string", "null"] },
+    "company": { "type": ["string", "null"] },
+    "custom_entry_map": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/customEntry" }
+    },
+    "settings": { "$ref": "#/$defs/customerSettings" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "meta": { "$ref": "#/$defs/customerMeta" },
+    "address": { "$ref": "#/$defs/address" }
+  },
+  "$defs": {
+    "customEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "value": { "type": ["string", "number", "boolean", "null"] },
+        "formatted_value": { "type": ["string", "number", "boolean", "null"] },
+        "label": { "type": ["string", "null"] },
+        "type": { "type": ["string", "null"] }
+      }
+    },
+    "customerSettings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "notifications": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "whatsapp": { "type": "boolean" },
+            "telegram": { "type": "boolean" },
+            "sms": { "type": "boolean" },
+            "telegramId": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "customerMeta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "has_account": { "type": "boolean" },
+        "external_id": { "type": ["string", "null"] },
+        "idp_user_id": { "type": ["string", "null"] }
+      }
+    },
+    "address": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "name": { "type": ["string", "null"] },
+        "street_address": { "type": ["string", "null"] },
+        "address_line_2": { "type": ["string", "null"] },
+        "zip_code": { "type": ["string", "null"] },
+        "city": { "type": ["string", "null"] },
+        "area": { "type": ["string", "null"] },
+        "country_code": { "type": ["string", "null"] },
+        "latitude": { "type": ["number", "null"] },
+        "longitude": { "type": ["number", "null"] },
+        "id": { "type": ["string", "null"] },
+        "type": { "type": ["string", "null"] },
+        "meta": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "address_line": { "type": ["string", "null"] },
+            "address_text": { "type": ["string", "null"] }
+          }
+        }
+      }
+    }
+  }
+}

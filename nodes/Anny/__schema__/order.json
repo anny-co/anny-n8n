@@ -1,0 +1,73 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Order",
+  "description": "Order confirmation object returned by the anny API.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "number", "currency", "status", "total"],
+  "properties": {
+    "id": { "type": "string", "description": "Order identifier." },
+    "type": { "type": "string", "description": "Resource type, usually orders." },
+    "number": { "type": "string" },
+    "currency": { "type": "string" },
+    "total": { "type": ["number", "null"] },
+    "modification_total": { "type": ["number", "null"] },
+    "net_amount": { "type": ["number", "null"] },
+    "tax_amount": { "type": ["number", "null"] },
+    "discount_amount": { "type": ["number", "null"] },
+    "system_fee": { "type": ["number", "null"] },
+    "status": { "type": "string" },
+    "access_token": { "type": ["string", "null"] },
+    "note": { "type": ["string", "null"] },
+    "manually_created": { "type": "boolean" },
+    "has_payment": { "type": "boolean" },
+    "expires_at": { "type": ["string", "null"], "format": "date-time" },
+    "start_date": { "type": ["string", "null"], "format": "date-time" },
+    "end_date": { "type": ["string", "null"], "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "payment_settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "trackPayment": { "type": "boolean" },
+        "createInvoice": { "type": "boolean" },
+        "issueDaysOffset": { "type": ["number", "null"] },
+        "issueReference": { "type": ["string", "null"] },
+        "enableCash": { "type": "boolean" },
+        "sendReminder": { "type": "boolean" }
+      }
+    },
+    "custom_entry_map": {
+      "type": "object",
+      "additionalProperties": { "$ref": "#/$defs/customEntry" }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "download_url": { "type": ["string", "null"], "format": "uri" },
+        "voucher_code": { "type": ["string", "null"] },
+        "is_base_order": { "type": "boolean" },
+        "payment_flow": { "type": ["string", "null"] }
+      }
+    },
+    "bookings": {
+      "type": "array",
+      "items": { "$ref": "./booking.json" }
+    },
+    "customer": { "$ref": "./customer.json" }
+  },
+  "$defs": {
+    "customEntry": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "value": { "type": ["string", "number", "boolean", "null"] },
+        "formatted_value": { "type": ["string", "number", "boolean", "null"] },
+        "label": { "type": ["string", "null"] },
+        "type": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

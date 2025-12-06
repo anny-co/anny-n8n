@@ -2,28 +2,14 @@ import type {
 	ILoadOptionsFunctions,
 	INodeListSearchItems,
 	INodeListSearchResult,
+	IDataObject,
 } from 'n8n-workflow';
 import { annyApiRequest } from '../shared/transport';
 
 interface ResourceItem {
 	id: string;
-	attributes?: {
-		name?: string;
-		description?: string;
-		type?: string;
-	};
-	name?: string;
-	description?: string;
-	type?: string;
-}
-
-interface ApiResponse {
-	data?: ResourceItem[];
-	meta?: {
-		current_page?: number;
-		last_page?: number;
-		total?: number;
-	};
+	name: string;
+	slug: string
 }
 
 export async function getResources(
@@ -43,29 +29,29 @@ export async function getResources(
 		qs['filter[search]'] = filter;
 	}
 
-	let responseData: ApiResponse = { data: [] };
+	let items: ResourceItem[] = [];
+	let meta: IDataObject = {};
 
 	try {
-		responseData = await annyApiRequest.call(this, 'GET', '/api/v1/resources', qs) as ApiResponse;
+		const response = await annyApiRequest.call(this, 'GET', '/api/v1/resources', qs) as IDataObject;
+		items = (response.data || response) as ResourceItem[];
+		meta = (response.meta || {}) as IDataObject;
 	} catch {
 		// Return empty if request fails
 	}
 
-	const items = responseData.data || [];
-	const results: INodeListSearchItems[] = items.map((item: ResourceItem) => {
-		const attrs = item.attributes || item;
-		const name = attrs.name || 'Unnamed Resource';
-		const type = attrs.type || '';
+	const results: INodeListSearchItems[] = (Array.isArray(items) ? items : []).map((item: ResourceItem) => {
+		const name = item.name;
 		
 		return {
-			name: type ? `${name} (${type})` : name,
+			name: `${name}`,
 			value: item.id,
 		};
 	});
 
-	const hasMore = responseData.meta?.current_page !== undefined && 
-		responseData.meta?.last_page !== undefined &&
-		responseData.meta.current_page < responseData.meta.last_page;
+	const hasMore = meta.current_page !== undefined && 
+		meta.last_page !== undefined &&
+		(meta.current_page as number) < (meta.last_page as number);
 	
 	const nextPaginationToken = hasMore ? String(page + 1) : undefined;
 

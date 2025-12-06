@@ -1,0 +1,196 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Service",
+  "description": "Service configuration returned by the anny API.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "name", "slug", "currency", "price"],
+  "properties": {
+    "id": { "type": "string", "description": "Service identifier." },
+    "type": { "type": "string", "description": "Resource type, usually services." },
+    "name": { "type": "string" },
+    "slug": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "hidden": { "type": "boolean" },
+    "viewing_requires_community": { "type": "boolean" },
+    "booking_requires_community": { "type": "boolean" },
+    "hidden_in_community": { "type": "boolean" },
+    "is_rental_option": { "type": "boolean" },
+    "has_flexible_duration": { "type": "boolean" },
+    "auto_duration": { "type": "boolean" },
+    "is_series": { "type": "boolean" },
+    "allow_cross_schedule": { "type": "boolean" },
+    "allow_cross_blocker": { "type": "boolean" },
+    "allow_end_off_schedule": { "type": "boolean" },
+    "requires_booking_description": { "type": "boolean" },
+    "requires_address": { "type": "boolean" },
+    "is_online": { "type": "boolean" },
+    "requires_mobile": { "type": "boolean" },
+    "allow_customer_notes": { "type": "boolean" },
+    "allow_more_bookings": { "type": "boolean" },
+    "charge_off_schedule": { "type": "boolean" },
+    "booking_interval": { "type": ["number", "null"] },
+    "auto_calculate_booking_interval": { "type": "boolean" },
+    "calculation_interval": { "type": ["number", "null"] },
+    "min_duration": { "type": ["number", "null"] },
+    "max_duration": { "type": ["number", "null"] },
+    "uncharged_duration": { "type": ["number", "null"] },
+    "is_full_day": { "type": "boolean" },
+    "lead_time": { "type": ["number", "null"] },
+    "padding_before": { "type": ["number", "null"] },
+    "padding_after": { "type": ["number", "null"] },
+    "advance_booking_period": { "type": ["number", "null"] },
+    "advance_start_time": { "type": ["string", "null"] },
+    "price": { "type": ["number", "null"] },
+    "starting_fee": { "type": ["number", "null"] },
+    "currency": { "type": "string" },
+    "tax_rate": { "type": ["number", "null"] },
+    "is_net_price": { "type": "boolean" },
+    "price_hidden": { "type": "boolean" },
+    "allow_personalization": { "type": "boolean" },
+    "allow_subsequent_personalization": { "type": "boolean" },
+    "require_personalization": { "type": "boolean" },
+    "require_first_personalization": { "type": "boolean" },
+    "require_address_personalization": { "type": "boolean" },
+    "allow_subsequent_personalizations": { "type": ["boolean", "null"] },
+    "default_weight": { "type": ["number", "null"] },
+    "full_weight": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "access_code": { "type": ["string", "null"] },
+    "anonymous_email": { "type": "boolean" },
+    "price_label": { "type": ["string", "null"] },
+    "has_custom_schedules": { "type": "boolean" },
+    "public_settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "cancellation": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "period": { "type": ["string", "null"] },
+            "offset": { "type": ["number", "null"] }
+          }
+        },
+        "payment": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "flow": { "type": ["string", "null"] }
+          }
+        }
+      }
+    },
+    "requires_host": { "type": "boolean" },
+    "allow_participants": { "type": "boolean" },
+    "participant_settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "participants": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "minParticipants": { "type": ["number", "null"] },
+            "maxParticipants": { "type": ["number", "null"] },
+            "allowCommunitySearch": { "type": "boolean" },
+            "showProfileImage": { "type": "boolean" },
+            "showDepartment": { "type": "boolean" },
+            "showFullName": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "unit": { "type": ["string", "null"] },
+    "quota": { "type": ["number", "null"] },
+    "allow_resource_selection": { "type": "boolean" },
+    "price_label_i18n": { "type": "object", "additionalProperties": true },
+    "archived": { "type": "boolean" },
+    "seo": { "type": "boolean" },
+    "public_listing": { "type": "boolean" },
+    "hidden_in_list": { "type": "boolean" },
+    "default_start_time": { "type": ["string", "null"] },
+    "default_end_time": { "type": ["string", "null"] },
+    "assignment_strategy": { "type": ["string", "null"] },
+    "settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "payment": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "flow": { "type": ["string", "null"] },
+            "trackPayment": { "type": "boolean" },
+            "createInvoice": { "type": "boolean" },
+            "issueDaysOffset": { "type": ["number", "null"] },
+            "issueReference": { "type": ["string", "null"] },
+            "enableCash": { "type": "boolean" }
+          }
+        },
+        "reminders": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "beforeStart": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+            "beforeEnd": { "type": "array", "items": { "type": "object", "additionalProperties": true } }
+          }
+        },
+        "cancellation": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "period": { "type": ["string", "null"] },
+            "offset": { "type": ["number", "null"] }
+          }
+        },
+        "participants": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "showFullName": { "type": "boolean" },
+            "showDepartment": { "type": "boolean" },
+            "allowCommunitySearch": { "type": "boolean" },
+            "minParticipants": { "type": ["number", "null"] },
+            "maxParticipants": { "type": ["number", "null"] },
+            "showProfileImage": { "type": "boolean" }
+          }
+        },
+        "pricing": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "showBreakdown": { "type": "boolean" }
+          }
+        }
+      }
+    },
+    "email_info": { "type": ["string", "null"] },
+    "view": { "type": ["string", "null"] },
+    "allow_recurring": { "type": "boolean" },
+    "series_periods": { "type": "array", "items": { "type": "object", "additionalProperties": true } },
+    "auto_accept_bookings": { "type": "boolean" },
+    "requires_quota": { "type": "boolean" },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "min_duration_total": { "type": ["number", "null"] },
+        "viewing_restricted": { "type": "boolean" },
+        "booking_restricted": { "type": "boolean" },
+        "duration_preview": { "type": ["string", "null"] },
+        "price_preview": { "type": ["string", "null"] },
+        "has_custom_forms": { "type": "boolean" },
+        "has_mandatory_custom_forms": { "type": "boolean" },
+        "has_add_ons": { "type": "boolean" },
+        "has_featured_add_ons": { "type": "boolean" },
+        "has_secondary_add_ons": { "type": "boolean" },
+        "has_sub_resources": { "type": "boolean" },
+        "has_recommended_resources": { "type": "boolean" },
+        "supports_instant_booking": { "type": "boolean" },
+        "resource_count": { "type": ["number", "null"] }
+      }
+    }
+  }
+}

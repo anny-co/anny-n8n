@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Resource",
+  "description": "Resource record such as a room or asset.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "slug", "name"],
+  "properties": {
+    "id": { "type": "string", "description": "Resource identifier." },
+    "type": { "type": "string", "description": "Resource type, usually resources." },
+    "slug": { "type": "string" },
+    "name": { "type": "string" },
+    "description": { "type": ["string", "null"] },
+    "plain_description": { "type": ["string", "null"] },
+    "availabilityMode": { "type": ["string", "null"] },
+    "continuous": { "type": "boolean" },
+    "color": { "type": ["string", "null"] },
+    "auto_accept_bookings": { "type": "boolean" },
+    "timezone": { "type": ["string", "null"] },
+    "quantity": { "type": ["number", "null"] },
+    "staggered_quantity": { "type": ["number", "null"] },
+    "max_booking_quantity": { "type": ["number", "null"] },
+    "max_sequence_quantity": { "type": ["number", "null"] },
+    "has_children": { "type": "boolean" },
+    "available_from": { "type": ["string", "null"], "format": "date-time" },
+    "available_to": { "type": ["string", "null"], "format": "date-time" },
+    "viewing_requires_community": { "type": "boolean" },
+    "booking_requires_community": { "type": "boolean" },
+    "latitude": { "type": ["number", "null"] },
+    "longitude": { "type": ["number", "null"] },
+    "has_map": { "type": "boolean" },
+    "is_online": { "type": "boolean" },
+    "allow_multi_service": { "type": "boolean" },
+    "create_booking_sequence": { "type": "boolean" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "seo": { "type": "boolean" },
+    "live": { "type": "boolean" },
+    "public_listing": { "type": "boolean" },
+    "display_public_description": { "type": "boolean" },
+    "hidden": { "type": "boolean" },
+    "archived": { "type": "boolean" },
+    "settings": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "showAvailabilityCalendar": { "type": "boolean" },
+        "showAvailability": { "type": "boolean" },
+        "showLocation": { "type": "boolean" },
+        "showServiceList": { "type": "boolean" },
+        "minimizeCoverImage": { "type": "boolean" },
+        "showAvailabilityCount": { "type": "boolean" },
+        "checkIn": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "isEnabled": { "type": "boolean" },
+            "autoExpiry": { "type": "boolean" },
+            "autoExpiresAfter": { "type": ["number", "null"] },
+            "allowedAdvancePeriod": { "type": ["number", "null"] },
+            "allowedDelayPeriod": { "type": ["number", "null"] },
+            "allowMultiple": { "type": "boolean" },
+            "releaseOnCheckout": { "type": "boolean" }
+          }
+        },
+        "printLabels": { "type": "boolean" },
+        "printNewCustomerCard": { "type": "boolean" },
+        "printCustomerDataLabel": { "type": "boolean" },
+        "createModelIdentifierAndPrintLabel": { "type": "boolean" },
+        "checkout": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "customerCanPickChildren": { "type": "boolean" },
+            "requiresLogin": { "type": "boolean" },
+            "requiresLoginReason": { "type": ["string", "null"] },
+            "verifyGuestEmail": { "type": "boolean" }
+          }
+        },
+        "waitlist": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "backoff": { "type": ["number", "null"] }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "maxBookings": {
+              "type": "object",
+              "additionalProperties": true,
+              "properties": {
+                "perDay": { "type": ["number", "null"] },
+                "perWeek": { "type": ["number", "null"] },
+                "perMonth": { "type": ["number", "null"] }
+              }
+            }
+          }
+        },
+        "maxBookings": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "perSlot": { "type": ["number", "null"] },
+            "perDay": { "type": ["number", "null"] },
+            "perWeek": { "type": ["number", "null"] },
+            "perMonth": { "type": ["number", "null"] }
+          }
+        },
+        "selfCheckIn": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "isEnabled": { "type": "boolean" },
+            "disabledUntil": { "type": ["number", "null"] },
+            "allowedUntil": { "type": ["number", "null"] },
+            "autoCheckInEnabled": { "type": "boolean" },
+            "checkOutEnabled": { "type": "boolean" },
+            "allowedOverrunTime": { "type": ["number", "null"] },
+            "geoCheckEnabled": { "type": "boolean" },
+            "geoCheckMaxDelta": { "type": ["number", "null"] }
+          }
+        }
+      }
+    },
+    "preview_token": { "type": ["string", "null"] },
+    "email_info": { "type": ["string", "null"] },
+    "email": { "type": ["string", "null"] },
+    "requires_quota": { "type": "boolean" },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "is_available": { "type": ["boolean", "null"] },
+        "display_quota": { "type": ["number", "null"] },
+        "booking_count": { "type": ["number", "null"] },
+        "number_available": { "type": ["number", "null"] },
+        "availability_result": { "type": ["string", "null"] },
+        "services_count": { "type": ["number", "null"] },
+        "settings": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "viewing_restricted": { "type": "boolean" },
+        "booking_restricted": { "type": "boolean" },
+        "parent_id": { "type": ["string", "null"] },
+        "client_url": { "type": ["string", "null"], "format": "uri" },
+        "preview_url": { "type": ["string", "null"], "format": "uri" }
+      }
+    },
+    "parent": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "slug": { "type": "string" },
+        "name": { "type": "string" },
+        "id": { "type": "string" },
+        "type": { "type": "string" }
+      }
+    }
+  }
+}

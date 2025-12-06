@@ -1,5 +1,5 @@
 {
-	"node": "n8n-nodes-base.anny",
+	"node": "n8n-nodes-anny.anny",
 	"nodeVersion": "1.0",
 	"codexVersion": "1.0",
 	"categories": ["Sales"],

@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Anny Invoice",
+  "description": "Invoice object returned by the anny API.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": ["id", "type", "number", "currency", "status", "total"],
+  "properties": {
+    "id": { "type": "string", "description": "Invoice identifier." },
+    "type": { "type": "string", "description": "Resource type, usually invoices." },
+    "number": { "type": "string" },
+    "formatted_number": { "type": ["string", "null"] },
+    "currency": { "type": "string" },
+    "is_cancellation": { "type": "boolean" },
+    "is_credit": { "type": "boolean" },
+    "has_payment": { "type": "boolean" },
+    "show_transfer_note": { "type": "boolean" },
+    "vat_number": { "type": ["string", "null"] },
+    "notes": { "type": ["string", "null"] },
+    "recipient": { "type": ["string", "null"] },
+    "invoicing_party": { "type": ["string", "null"] },
+    "total": { "type": ["number", "null"] },
+    "net_amount": { "type": ["number", "null"] },
+    "tax_amount": { "type": ["number", "null"] },
+    "status": { "type": "string" },
+    "is_processing": { "type": "boolean" },
+    "access_token": { "type": ["string", "null"] },
+    "is_quote": { "type": "boolean" },
+    "allow_online_payment": { "type": "boolean" },
+    "payment_reminders": { "type": "boolean" },
+    "locked": { "type": "boolean" },
+    "fields": { "type": ["object", "null"], "additionalProperties": true },
+    "country_code": { "type": ["string", "null"] },
+    "region": { "type": ["string", "null"] },
+    "auto_lock": { "type": "boolean" },
+    "issued_at": { "type": ["string", "null"], "format": "date-time" },
+    "due_date": { "type": ["string", "null"], "format": "date-time" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "calculate_from_net": { "type": "boolean" },
+    "seller_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "city": { "type": ["string", "null"] },
+        "iban": { "type": ["string", "null"] },
+        "name": { "type": ["string", "null"] },
+        "timezone": { "type": ["string", "null"] },
+        "bank_name": { "type": ["string", "null"] },
+        "vat_number": { "type": ["string", "null"] },
+        "postal_code": { "type": ["string", "null"] },
+        "address_line": { "type": ["string", "null"] },
+        "contact_name": { "type": ["string", "null"] },
+        "country_code": { "type": ["string", "null"] },
+        "trading_name": { "type": ["string", "null"] },
+        "contact_email": { "type": ["string", "null"], "format": "email" },
+        "contact_phone": { "type": ["string", "null"] }
+      }
+    },
+    "buyer_data": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "ean": { "type": ["string", "null"] },
+        "city": { "type": ["string", "null"] },
+        "timezone": { "type": ["string", "null"] },
+        "vat_number": { "type": ["string", "null"] },
+        "postal_code": { "type": ["string", "null"] },
+        "address_line": { "type": ["string", "null"] },
+        "company_name": { "type": ["string", "null"] },
+        "contact_name": { "type": ["string", "null"] },
+        "country_code": { "type": ["string", "null"] }
+      }
+    },
+    "vat_breakdown": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": true,
+        "properties": {
+          "tax_rate": { "type": ["number", "null"] },
+          "item_count": { "type": ["number", "null"] },
+          "net_amount": { "type": ["number", "null"] },
+          "tax_amount": { "type": ["number", "null"] },
+          "gross_amount": { "type": ["number", "null"] }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "download_url": { "type": ["string", "null"], "format": "uri" },
+        "xml_download_url": { "type": ["string", "null"], "format": "uri" },
+        "quote_download_url": { "type": ["string", "null"], "format": "uri" },
+        "reference_type": { "type": ["string", "null"] },
+        "has_xml": { "type": ["boolean", "null"] }
+      }
+    }
+  }
+}
