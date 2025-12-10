@@ -78,13 +78,40 @@ export class AnnyOAuth2Api implements ICredentialType {
 			type: 'hidden',
 			default: 'body',
 		},
-		// Override parent clientId/clientSecret to be hidden with pre-configured values
+		{
+			displayName: 'Use PKCE',
+			name: 'usePkce',
+			type: 'hidden',
+			default: true,
+		},
+		// Override parent clientId to be hidden with pre-configured values
 		{
 			displayName: 'Client ID',
 			name: 'clientId',
 			type: 'hidden',
 			default:
 				'={{$self["region"] === "co" ? "a087a0ba-46c7-4221-8472-8fc16702f84a" : $self["region"] === "eu" ? "a087a108-0c7b-4c09-963d-6e51defeac16" : $self["region"] === "local" ? "a087a15e-6337-48a9-b126-eb861ef48486" : "a087a050-ae57-4f29-923c-efb296462024"}}',
+		},
+		// Override parent clientSecret to be hidden (not needed for PKCE flow)
+		{
+			displayName: 'Client Secret',
+			name: 'clientSecret',
+			type: 'hidden',
+			default: '',
+		},
+		// Override parent authQueryParameters to be hidden
+		{
+			displayName: 'Auth URI Query Parameters',
+			name: 'authQueryParameters',
+			type: 'hidden',
+			default: '',
+		},
+		// Override parent allowedDomains to be hidden
+		{
+			displayName: 'Allowed HTTP Request Domains',
+			name: 'allowedDomains',
+			type: 'hidden',
+			default: [],
 		},
 		{
 			displayName: 'Organization ID',
