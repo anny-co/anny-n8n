@@ -1527,44 +1527,14 @@ export class Anny implements INodeType {
 							response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}`, qs);
 					} else if (operation === 'cancel') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}/cancel`);
+						response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}/cancel`, {}, undefined, {}, true, true);
 					} else if (operation === 'checkIn') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-in`);
+						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-in`, {}, undefined, {}, true, true);
 					} else if (operation === 'checkOut') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`);
+						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`, {}, undefined, {}, true, true);
 					}
-					// TODO: Re-enable instant booking when API issues are resolved
-					// else if (operation === 'instantBook') {
-					// 	const resourceId = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
-					// 	const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
-					// 	const dateMode = this.getNodeParameter('dateMode', i) as string;
-					// 	const additionalFields = this.getNodeParameter('instantBookAdditionalFields', i) as {
-					// 		notes?: string;
-					// 	};
-
-					// 	const body: IDataObject = {
-					// 		resource_id: resourceId,
-					// 	};
-
-					// 	if (serviceId) body.service_id = serviceId;
-
-					// 	if (dateMode === 'dateOnly') {
-					// 		const date = this.getNodeParameter('date', i) as string;
-					// 		body.date = date;
-					// 	} else {
-					// 		// dateTimeRange mode
-					// 		const startDateTime = this.getNodeParameter('startDateTime', i) as string;
-					// 		const endDateTime = this.getNodeParameter('endDateTime', i) as string;
-					// 		body.start_date = formatDateTime(startDateTime);
-					// 		body.end_date = formatDateTime(endDateTime);
-					// 	}
-
-					// 	if (additionalFields.notes) body.notes = additionalFields.notes;
-
-					// 	response = await annyApiRequest.call(this, 'POST', '/api/v1/bookings/instant', {}, body, {}, true, true);
-					// }
 				}
 
 				// ==================== CUSTOMER ====================
