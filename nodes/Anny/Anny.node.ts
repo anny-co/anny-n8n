@@ -686,18 +686,18 @@ export class Anny implements INodeType {
 						description: 'The new email address of the customer',
 					},
 					{
-						displayName: 'Given Name',
-						name: 'givenName',
-						type: 'string',
-						default: '',
-						description: 'The new given name (first name) of the customer',
-					},
-					{
 						displayName: 'Family Name',
 						name: 'familyName',
 						type: 'string',
 						default: '',
 						description: 'The new family name (last name) of the customer',
+					},
+					{
+						displayName: 'Given Name',
+						name: 'givenName',
+						type: 'string',
+						default: '',
+						description: 'The new given name (first name) of the customer',
 					},
 					{
 						displayName: 'Phone',
