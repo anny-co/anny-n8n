@@ -27,13 +27,28 @@ export function toJsonApiPayload(
 }
 
 /**
- * Formats a date to ISO 8601 string
+ * Formats a date to ISO 8601 with timezone offset (Y-m-d\TH:i:sP format)
+ * Example output: 2024-01-15T14:30:00+01:00
  */
 export function formatDateTime(date: string | Date): string {
-	if (typeof date === 'string') {
-		return new Date(date).toISOString();
-	}
-	return date.toISOString();
+	const d = typeof date === 'string' ? new Date(date) : date;
+
+	const pad = (n: number) => String(n).padStart(2, '0');
+
+	const year = d.getFullYear();
+	const month = pad(d.getMonth() + 1);
+	const day = pad(d.getDate());
+	const hours = pad(d.getHours());
+	const minutes = pad(d.getMinutes());
+	const seconds = pad(d.getSeconds());
+
+	// Get timezone offset in hours and minutes
+	const tzOffset = -d.getTimezoneOffset();
+	const tzSign = tzOffset >= 0 ? '+' : '-';
+	const tzHours = pad(Math.floor(Math.abs(tzOffset) / 60));
+	const tzMins = pad(Math.abs(tzOffset) % 60);
+
+	return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${tzSign}${tzHours}:${tzMins}`;
 }
 
 function compact(data: IDataObject): IDataObject {

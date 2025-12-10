@@ -28,6 +28,7 @@ export async function annyApiRequest(
 	qs: IDataObject = {},
 	body?: IDataObject,
 	headers: IDataObject = {},
+	useJsonApi: boolean = true,
 ): Promise<IDataObject> {
 	// Determine which authentication method is being used
 	const authType = this.getNodeParameter('authentication', 0, 'oAuth2') as string;
@@ -43,13 +44,16 @@ export async function annyApiRequest(
 		qs.o = organizationId;
 	}
 
+	// Use application/vnd.api+json for JSON:API requests, application/json for simple requests
+	const contentType = useJsonApi ? 'application/vnd.api+json' : 'application/json';
+
 	const options: IHttpRequestOptions = {
 		method: method as IHttpRequestMethods,
 		url: `${baseUrl}${resource}`,
 		qs,
 		headers: {
 			Accept: 'application/json',
-			'Content-Type': 'application/vnd.api+json',
+			'Content-Type': contentType,
 			...headers,
 		},
 		json: true,

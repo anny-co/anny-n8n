@@ -14,7 +14,7 @@ import { getServices } from './listSearch/getServices';
 import { getResources } from './listSearch/getResources';
 import { getCustomers } from './listSearch/getCustomers';
 import { annyApiRequest } from './shared/transport';
-import { simplifyByResource, toJsonApiPayload } from './shared/utils';
+import { simplifyByResource, toJsonApiPayload, formatDateTime } from './shared/utils';
 import {
 	bookingSelect,
 	serviceSelect,
@@ -175,6 +175,17 @@ export class Anny implements INodeType {
 				],
 				default: 'getUpcomingIntervals',
 			},
+			// Availability - Resource ID (optional, but listed first)
+			{
+				...resourceSelect,
+				required: false,
+				description: 'Optionally filter by specific resource',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+			},
 			// Availability - Service ID (required for all operations)
 			{
 				...serviceSelect,
@@ -210,17 +221,6 @@ export class Anny implements INodeType {
 				required: true,
 				placeholder: 'e.g., Europe/Berlin',
 				description: 'User timezone for availability calculation',
-				displayOptions: {
-					show: {
-						resource: ['availability'],
-					},
-				},
-			},
-			// Availability - Resource ID (optional)
-			{
-				...resourceSelect,
-				required: false,
-				description: 'Optionally filter by specific resource',
 				displayOptions: {
 					show: {
 						resource: ['availability'],
@@ -1486,19 +1486,19 @@ export class Anny implements INodeType {
 
 						if (operation === 'getUpcomingIntervals') {
 							const startDate = this.getNodeParameter('startDate', i, '') as string;
-							if (startDate) qs.start_date = startDate;
+							if (startDate) qs.start_date = formatDateTime(startDate);
 
-							response = await annyApiRequest.call(this, 'GET', '/api/v1/availability/upcoming-intervals', qs);
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/availability/upcoming-intervals', qs, undefined, {}, false);
 						} else if (operation === 'getStartTimes') {
 							const availabilityDate = this.getNodeParameter('availabilityDate', i) as string;
 							qs.date = availabilityDate;
 
-							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/start', qs);
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/start', qs, undefined, {}, false);
 						} else if (operation === 'getEndTimes') {
 							const dateTime = this.getNodeParameter('dateTime', i) as string;
-							qs.date_time = dateTime;
+							qs.date_time = formatDateTime(dateTime);
 
-							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/end', qs);
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/end', qs, undefined, {}, false);
 						}
 					}
 
