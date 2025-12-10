@@ -52,9 +52,40 @@ export class Anny implements INodeType {
 			{
 				name: 'annyOAuth2Api',
 				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['oAuth2'],
+					},
+				},
+			},
+			{
+				name: 'annyAccessTokenApi',
+				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['accessToken'],
+					},
+				},
 			},
 		],
 		properties: [
+			// Authentication type selector
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				options: [
+					{
+						name: 'OAuth2',
+						value: 'oAuth2',
+					},
+					{
+						name: 'Access Token',
+						value: 'accessToken',
+					},
+				],
+				default: 'oAuth2',
+			},
 			// Resource selector
 			{
 				displayName: 'Resource',

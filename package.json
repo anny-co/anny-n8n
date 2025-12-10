@@ -34,7 +34,8 @@
 		"n8nNodesApiVersion": 1,
 		"strict": true,
 		"credentials": [
-			"dist/credentials/AnnyOAuth2Api.credentials.js"
+			"dist/credentials/AnnyOAuth2Api.credentials.js",
+			"dist/credentials/AnnyAccessTokenApi.credentials.js"
 		],
 		"nodes": [
 			"dist/nodes/Anny/Anny.node.js",

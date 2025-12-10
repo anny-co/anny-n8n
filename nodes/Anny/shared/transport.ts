@@ -29,11 +29,15 @@ export async function annyApiRequest(
 	body?: IDataObject,
 	headers: IDataObject = {},
 ): Promise<IDataObject> {
-	const credentials = await this.getCredentials('annyOAuth2Api');
+	// Determine which authentication method is being used
+	const authType = this.getNodeParameter('authentication', 0, 'oAuth2') as string;
+	const credentialType = authType === 'accessToken' ? 'annyAccessTokenApi' : 'annyOAuth2Api';
+
+	const credentials = await this.getCredentials(credentialType);
 	const region = (credentials.region as string) || 'co';
 	const baseUrl = getBaseUrl(region);
 
-	// Get organization ID from credentials (stored via preAuthentication)
+	// Get organization ID from credentials (stored via preAuthentication for OAuth2)
 	const organizationId = credentials.organizationId as string | undefined;
 	if (organizationId) {
 		qs.o = organizationId;
@@ -58,7 +62,7 @@ export async function annyApiRequest(
 	try {
 		return await this.helpers.httpRequestWithAuthentication.call(
 			this,
-			'annyOAuth2Api',
+			credentialType,
 			options,
 		);
 	} catch (error) {

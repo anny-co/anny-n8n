@@ -27,6 +27,20 @@ export class AnnyTrigger implements INodeType {
 			{
 				name: 'annyOAuth2Api',
 				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['oAuth2'],
+					},
+				},
+			},
+			{
+				name: 'annyAccessTokenApi',
+				required: true,
+				displayOptions: {
+					show: {
+						authentication: ['accessToken'],
+					},
+				},
 			},
 		],
 		webhooks: [
@@ -38,6 +52,23 @@ export class AnnyTrigger implements INodeType {
 			},
 		],
 		properties: [
+			// Authentication type selector
+			{
+				displayName: 'Authentication',
+				name: 'authentication',
+				type: 'options',
+				options: [
+					{
+						name: 'OAuth2',
+						value: 'oAuth2',
+					},
+					{
+						name: 'Access Token',
+						value: 'accessToken',
+					},
+				],
+				default: 'oAuth2',
+			},
 			{
 				displayName: 'Events',
 				name: 'events',
