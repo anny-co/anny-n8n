@@ -20,9 +20,10 @@ Follow the [installation guide](https://docs.n8n.io/integrations/community-nodes
 
 ## Operations
 
-- Bookings: create, get, list (with filters), update, cancel, check-in, check-out
+- Bookings: get, list (with filters), cancel, check-in, check-out
 - Customers: create, get, list (with filters), update, delete
 - Orders, invoices, plan subscriptions, services, resources: get and list with filters and includes
+- Availability: get upcoming intervals for a resource/service combination
 - API Call: run arbitrary requests against `/api/*` with custom method, params, headers, and body
 - Triggers: webhooks for bookings (created/started/ended/updated/checked-in/checked-out/cancelled/deleted), customers (created/updated/deleted), orders (created/updated/deleted), invoices (created/updated/deleted)
 

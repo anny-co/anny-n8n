@@ -322,22 +322,16 @@ export class Anny implements INodeType {
 					// 	action: 'Create instant booking',
 					// 	description: 'Create an instant booking with a single request',
 					// },
-					{
-						name: 'Update',
-						value: 'update',
-						action: 'Update booking',
-						description: 'Update an existing booking',
-					},
 				],
 				default: 'getAll',
 			},
-			// Booking ID for get, update, cancel, checkIn, checkOut
+			// Booking ID for get, cancel, checkIn, checkOut
 			{
 				...bookingSelect,
 				displayOptions: {
 					show: {
 						resource: ['booking'],
-						operation: ['get', 'update', 'cancel', 'checkIn', 'checkOut'],
+						operation: ['get', 'cancel', 'checkIn', 'checkOut'],
 					},
 				},
 			},
@@ -350,36 +344,6 @@ export class Anny implements INodeType {
 						operation: ['get'],
 					},
 				},
-			},
-			// Booking Update operation fields
-			{
-				displayName: 'Update Fields',
-				name: 'updateFields',
-				type: 'collection',
-				placeholder: 'Add Field',
-				default: {},
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['update'],
-					},
-				},
-				options: [
-					{
-						displayName: 'Starts At',
-						name: 'start_date',
-						type: 'dateTime',
-						default: '',
-						description: 'The new start date and time of the booking',
-					},
-					{
-						displayName: 'Ends At',
-						name: 'end_date',
-						type: 'dateTime',
-						default: '',
-						description: 'The new end date and time of the booking',
-					},
-				],
 			},
 			// Booking Get Many options
 			{
@@ -734,16 +698,6 @@ export class Anny implements INodeType {
 						type: 'string',
 						default: '',
 						description: 'The new family name (last name) of the customer',
-					},
-					{
-						displayName: 'Notes',
-						name: 'notes',
-						type: 'string',
-						typeOptions: {
-							rows: 3,
-						},
-						default: '',
-						description: 'Updated notes about the customer',
 					},
 					{
 						displayName: 'Phone',
@@ -1571,26 +1525,9 @@ export class Anny implements INodeType {
 							const qs: IDataObject = {};
 							if (include) qs.include = include;
 							response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}`, qs);
-					} else if (operation === 'update') {
-						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						const updateFields = this.getNodeParameter('updateFields', i) as {
-							startsAt?: string;
-							endsAt?: string;
-							notes?: string;
-							status?: string;
-						};
-
-						const attributes: IDataObject = {};
-						if (updateFields.startsAt) attributes.starts_at = updateFields.startsAt;
-						if (updateFields.endsAt) attributes.ends_at = updateFields.endsAt;
-						if (updateFields.notes) attributes.notes = updateFields.notes;
-						if (updateFields.status) attributes.status = updateFields.status;
-
-						const body = toJsonApiPayload('bookings', attributes, undefined, bookingId);
-						response = await annyApiRequest.call(this, 'PATCH', `/api/v1/bookings/${bookingId}`, {}, body);
 					} else if (operation === 'cancel') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/cancel`);
+						response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}/cancel`);
 					} else if (operation === 'checkIn') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
 						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-in`);
