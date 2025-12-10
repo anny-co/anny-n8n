@@ -367,39 +367,17 @@ export class Anny implements INodeType {
 				options: [
 					{
 						displayName: 'Starts At',
-						name: 'startsAt',
+						name: 'start_date',
 						type: 'dateTime',
 						default: '',
 						description: 'The new start date and time of the booking',
 					},
 					{
 						displayName: 'Ends At',
-						name: 'endsAt',
+						name: 'end_date',
 						type: 'dateTime',
 						default: '',
 						description: 'The new end date and time of the booking',
-					},
-					{
-						displayName: 'Notes',
-						name: 'notes',
-						type: 'string',
-						typeOptions: {
-							rows: 3,
-						},
-						default: '',
-						description: 'Updated notes for the booking',
-					},
-					{
-						displayName: 'Status',
-						name: 'status',
-						type: 'options',
-						options: [
-							{ name: 'Pending', value: 'pending' },
-							{ name: 'Confirmed', value: 'confirmed' },
-							{ name: 'Cancelled', value: 'cancelled' },
-						],
-						default: 'confirmed',
-						description: 'The new status of the booking',
 					},
 				],
 			},
@@ -464,7 +442,6 @@ export class Anny implements INodeType {
 					},
 				},
 			},
-			// TODO: Re-enable instant booking UI fields when API issues are resolved
 			// // Instant Book operation fields
 			// {
 			// 	...resourceSelect,
@@ -686,28 +663,25 @@ export class Anny implements INodeType {
 						description: 'The company name of the customer',
 					},
 					{
-						displayName: 'First Name',
-						name: 'firstName',
+						displayName: 'Family Name',
+						name: 'familyName',
 						type: 'string',
 						default: '',
-						description: 'The first name of the customer',
+						description: 'The family name (last name) of the customer',
 					},
 					{
-						displayName: 'Last Name',
-						name: 'lastName',
+						displayName: 'Given Name',
+						name: 'givenName',
 						type: 'string',
 						default: '',
-						description: 'The last name of the customer',
+						description: 'The given name (first name) of the customer',
 					},
 					{
-						displayName: 'Notes',
-						name: 'notes',
+						displayName: 'Mobile',
+						name: 'mobile',
 						type: 'string',
-						typeOptions: {
-							rows: 3,
-						},
 						default: '',
-						description: 'Additional notes about the customer',
+						description: 'The mobile number of the customer',
 					},
 					{
 						displayName: 'Phone',
@@ -748,18 +722,18 @@ export class Anny implements INodeType {
 						description: 'The new email address of the customer',
 					},
 					{
-						displayName: 'First Name',
-						name: 'firstName',
+						displayName: 'Given Name',
+						name: 'givenName',
 						type: 'string',
 						default: '',
-						description: 'The new first name of the customer',
+						description: 'The new given name (first name) of the customer',
 					},
 					{
-						displayName: 'Last Name',
-						name: 'lastName',
+						displayName: 'Family Name',
+						name: 'familyName',
 						type: 'string',
 						default: '',
-						description: 'The new last name of the customer',
+						description: 'The new family name (last name) of the customer',
 					},
 					{
 						displayName: 'Notes',
@@ -1699,16 +1673,16 @@ export class Anny implements INodeType {
 					} else if (operation === 'create') {
 						const email = this.getNodeParameter('email', i) as string;
 						const additionalFields = this.getNodeParameter('additionalFields', i) as {
-							firstName?: string;
-							lastName?: string;
+							givenName?: string;
+							familyName?: string;
 							phone?: string;
 							company?: string;
 							notes?: string;
 						};
 
 						const attributes: IDataObject = { email };
-						if (additionalFields.firstName) attributes.first_name = additionalFields.firstName;
-						if (additionalFields.lastName) attributes.last_name = additionalFields.lastName;
+						if (additionalFields.givenName) attributes.given_name = additionalFields.givenName;
+						if (additionalFields.familyName) attributes.family_name = additionalFields.familyName;
 						if (additionalFields.phone) attributes.phone = additionalFields.phone;
 						if (additionalFields.company) attributes.company = additionalFields.company;
 						if (additionalFields.notes) attributes.notes = additionalFields.notes;
@@ -1719,8 +1693,8 @@ export class Anny implements INodeType {
 						const customerId = this.getNodeParameter('customerId', i, '', { extractValue: true }) as string;
 						const updateFields = this.getNodeParameter('updateFields', i) as {
 							email?: string;
-							firstName?: string;
-							lastName?: string;
+							givenName?: string;
+							familyName?: string;
 							phone?: string;
 							company?: string;
 							notes?: string;
@@ -1728,8 +1702,8 @@ export class Anny implements INodeType {
 
 						const attributes: IDataObject = {};
 						if (updateFields.email) attributes.email = updateFields.email;
-						if (updateFields.firstName) attributes.first_name = updateFields.firstName;
-						if (updateFields.lastName) attributes.last_name = updateFields.lastName;
+						if (updateFields.givenName) attributes.given_name = updateFields.givenName;
+						if (updateFields.familyName) attributes.family_name = updateFields.familyName;
 						if (updateFields.phone) attributes.phone = updateFields.phone;
 						if (updateFields.company) attributes.company = updateFields.company;
 						if (updateFields.notes) attributes.notes = updateFields.notes;
