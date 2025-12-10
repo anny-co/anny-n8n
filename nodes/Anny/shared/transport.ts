@@ -29,6 +29,7 @@ export async function annyApiRequest(
 	body?: IDataObject,
 	headers: IDataObject = {},
 	useJsonApi: boolean = true,
+	acceptJsonApi: boolean = false,
 ): Promise<IDataObject> {
 	// Determine which authentication method is being used
 	const authType = this.getNodeParameter('authentication', 0, 'oAuth2') as string;
@@ -46,13 +47,14 @@ export async function annyApiRequest(
 
 	// Use application/vnd.api+json for JSON:API requests, application/json for simple requests
 	const contentType = useJsonApi ? 'application/vnd.api+json' : 'application/json';
+	const acceptType = acceptJsonApi ? 'application/vnd.api+json' : 'application/json';
 
 	const options: IHttpRequestOptions = {
 		method: method as IHttpRequestMethods,
 		url: `${baseUrl}${resource}`,
 		qs,
 		headers: {
-			Accept: 'application/json',
+			Accept: acceptType,
 			'Content-Type': contentType,
 			...headers,
 		},
@@ -70,14 +72,38 @@ export async function annyApiRequest(
 			options,
 		);
 	} catch (error) {
-		const err = error as { message?: string; statusCode?: number; response?: { body?: { error?: string; title?: string; message?: string } } };
-		
+		const err = error as {
+			message?: string;
+			statusCode?: number;
+			response?: {
+				body?: {
+					error?: string;
+					title?: string;
+					message?: string;
+					errors?: Array<{
+						status?: string;
+						code?: string;
+						title?: string;
+						detail?: string;
+					}>;
+				};
+			};
+		};
+
 		// Format error message based on status code
 		let errorMessage = err.message || 'Unknown error';
-		
+
 		if (err.response?.body) {
 			const body = err.response.body;
-			if (body.error) {
+
+			// Handle JSON:API errors array format
+			if (body.errors && Array.isArray(body.errors) && body.errors.length > 0) {
+				const errorMessages = body.errors.map((e) => {
+					const status = e.status || err.statusCode || '';
+					return `[${status}] ${e.title}: ${e.detail}`;
+				});
+				errorMessage = errorMessages.join('; ');
+			} else if (body.error) {
 				errorMessage = `[${err.statusCode}] ${body.error}`;
 			} else if (body.title && body.message) {
 				errorMessage = `[${err.statusCode}] ${body.title}: ${body.message}`;

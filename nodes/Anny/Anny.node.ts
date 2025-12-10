@@ -315,12 +315,13 @@ export class Anny implements INodeType {
 						action: 'Get many bookings',
 						description: 'Get multiple bookings',
 					},
-					{
-						name: 'Instant Book',
-						value: 'instantBook',
-						action: 'Create instant booking',
-						description: 'Create an instant booking with a single request',
-					},
+					// TODO: Re-enable instant booking when API issues are resolved
+					// {
+					// 	name: 'Instant Book',
+					// 	value: 'instantBook',
+					// 	action: 'Create instant booking',
+					// 	description: 'Create an instant booking with a single request',
+					// },
 					{
 						name: 'Update',
 						value: 'update',
@@ -463,71 +464,125 @@ export class Anny implements INodeType {
 					},
 				},
 			},
-			// Instant Book operation fields
-			{
-				...resourceSelect,
-				description: 'The resource to book',
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['instantBook'],
-					},
-				},
-			},
-			{
-				...serviceSelect,
-				required: false,
-				description: 'The service to book (optional)',
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['instantBook'],
-					},
-				},
-			},
-			{
-				displayName: 'Date',
-				name: 'date',
-				type: 'string',
-				default: '',
-				placeholder: 'YYYY-MM-DD',
-				description: 'Use YYYY-MM-DD format if start time is not known. This will choose the first available interval on this day.',
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['instantBook'],
-					},
-				},
-			},
-			{
-				displayName: 'Additional Fields',
-				name: 'instantBookAdditionalFields',
-				type: 'collection',
-				placeholder: 'Add Field',
-				default: {},
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['instantBook'],
-					},
-				},
-				options: [
-					{
-						displayName: 'Start Date',
-						name: 'startDate',
-						type: 'dateTime',
-						default: '',
-						description: 'Optionally pass start date time',
-					},
-					{
-						displayName: 'End Date',
-						name: 'endDate',
-						type: 'dateTime',
-						default: '',
-						description: 'Optionally pass end date time',
-					},
-				],
-			},
+			// TODO: Re-enable instant booking UI fields when API issues are resolved
+			// // Instant Book operation fields
+			// {
+			// 	...resourceSelect,
+			// 	description: 'The resource to book',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	...serviceSelect,
+			// 	required: false,
+			// 	description: 'The service to book (optional)',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	displayName: 'Date Mode',
+			// 	name: 'dateMode',
+			// 	type: 'options',
+			// 	options: [
+			// 		{
+			// 			name: 'Date Only',
+			// 			value: 'dateOnly',
+			// 			description: 'Pick the first available interval on this day',
+			// 		},
+			// 		{
+			// 			name: 'Date Time Range',
+			// 			value: 'dateTimeRange',
+			// 			description: 'Specify exact start and end date/time',
+			// 		},
+			// 	],
+			// 	default: 'dateOnly',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 		},
+			// 	},
+			// 	description: 'Choose how to specify the booking time',
+			// },
+			// {
+			// 	displayName: 'Date',
+			// 	name: 'date',
+			// 	type: 'string',
+			// 	default: '',
+			// 	placeholder: 'YYYY-MM-DD',
+			// 	required: true,
+			// 	description: 'Use YYYY-MM-DD format. This will choose the first available interval on this day.',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 			dateMode: ['dateOnly'],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	displayName: 'Start Date Time',
+			// 	name: 'startDateTime',
+			// 	type: 'dateTime',
+			// 	default: '',
+			// 	required: true,
+			// 	description: 'The start date and time of the booking',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 			dateMode: ['dateTimeRange'],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	displayName: 'End Date Time',
+			// 	name: 'endDateTime',
+			// 	type: 'dateTime',
+			// 	default: '',
+			// 	required: true,
+			// 	description: 'The end date and time of the booking',
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 			dateMode: ['dateTimeRange'],
+			// 		},
+			// 	},
+			// },
+			// {
+			// 	displayName: 'Additional Fields',
+			// 	name: 'instantBookAdditionalFields',
+			// 	type: 'collection',
+			// 	placeholder: 'Add Field',
+			// 	default: {},
+			// 	displayOptions: {
+			// 		show: {
+			// 			resource: ['booking'],
+			// 			operation: ['instantBook'],
+			// 		},
+			// 	},
+			// 	options: [
+			// 		{
+			// 			displayName: 'Notes',
+			// 			name: 'notes',
+			// 			type: 'string',
+			// 			typeOptions: {
+			// 				rows: 3,
+			// 			},
+			// 			default: '',
+			// 			description: 'Notes for the booking',
+			// 		},
+			// 	],
+			// },
 
 			// ==================== CUSTOMER OPERATIONS ====================
 			{
@@ -1568,26 +1623,37 @@ export class Anny implements INodeType {
 					} else if (operation === 'checkOut') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
 						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`);
-					} else if (operation === 'instantBook') {
-						const resourceId = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
-						const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
-						const date = this.getNodeParameter('date', i, '') as string;
-						const additionalFields = this.getNodeParameter('instantBookAdditionalFields', i) as {
-							startDate?: string;
-							endDate?: string;
-						};
-
-						const body: IDataObject = {
-							resource_id: resourceId,
-						};
-
-						if (serviceId) body.service_id = serviceId;
-						if (date) body.date = date;
-						if (additionalFields.startDate) body.start_date = additionalFields.startDate;
-						if (additionalFields.endDate) body.end_date = additionalFields.endDate;
-
-						response = await annyApiRequest.call(this, 'POST', '/api/v1/bookings/instant', {}, body);
 					}
+					// TODO: Re-enable instant booking when API issues are resolved
+					// else if (operation === 'instantBook') {
+					// 	const resourceId = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
+					// 	const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
+					// 	const dateMode = this.getNodeParameter('dateMode', i) as string;
+					// 	const additionalFields = this.getNodeParameter('instantBookAdditionalFields', i) as {
+					// 		notes?: string;
+					// 	};
+
+					// 	const body: IDataObject = {
+					// 		resource_id: resourceId,
+					// 	};
+
+					// 	if (serviceId) body.service_id = serviceId;
+
+					// 	if (dateMode === 'dateOnly') {
+					// 		const date = this.getNodeParameter('date', i) as string;
+					// 		body.date = date;
+					// 	} else {
+					// 		// dateTimeRange mode
+					// 		const startDateTime = this.getNodeParameter('startDateTime', i) as string;
+					// 		const endDateTime = this.getNodeParameter('endDateTime', i) as string;
+					// 		body.start_date = formatDateTime(startDateTime);
+					// 		body.end_date = formatDateTime(endDateTime);
+					// 	}
+
+					// 	if (additionalFields.notes) body.notes = additionalFields.notes;
+
+					// 	response = await annyApiRequest.call(this, 'POST', '/api/v1/bookings/instant', {}, body, {}, true, true);
+					// }
 				}
 
 				// ==================== CUSTOMER ====================
