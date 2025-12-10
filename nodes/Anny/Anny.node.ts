@@ -150,6 +150,12 @@ export class Anny implements INodeType {
 						description: 'Get multiple bookings',
 					},
 					{
+						name: 'Instant Book',
+						value: 'instantBook',
+						action: 'Create instant booking',
+						description: 'Create an instant booking with a single request',
+					},
+					{
 						name: 'Update',
 						value: 'update',
 						action: 'Update booking',
@@ -290,6 +296,71 @@ export class Anny implements INodeType {
 						operation: ['getAll'],
 					},
 				},
+			},
+			// Instant Book operation fields
+			{
+				...resourceSelect,
+				description: 'The resource to book',
+				displayOptions: {
+					show: {
+						resource: ['booking'],
+						operation: ['instantBook'],
+					},
+				},
+			},
+			{
+				...serviceSelect,
+				required: false,
+				description: 'The service to book (optional)',
+				displayOptions: {
+					show: {
+						resource: ['booking'],
+						operation: ['instantBook'],
+					},
+				},
+			},
+			{
+				displayName: 'Date',
+				name: 'date',
+				type: 'string',
+				default: '',
+				placeholder: 'YYYY-MM-DD',
+				description: 'Use YYYY-MM-DD format if start time is not known. This will choose the first available interval on this day.',
+				displayOptions: {
+					show: {
+						resource: ['booking'],
+						operation: ['instantBook'],
+					},
+				},
+			},
+			{
+				displayName: 'Additional Fields',
+				name: 'instantBookAdditionalFields',
+				type: 'collection',
+				placeholder: 'Add Field',
+				default: {},
+				displayOptions: {
+					show: {
+						resource: ['booking'],
+						operation: ['instantBook'],
+					},
+				},
+				options: [
+					{
+						displayName: 'Start Date',
+						name: 'startDate',
+						type: 'dateTime',
+						default: '',
+						description: 'Optionally pass start date time',
+					},
+					{
+						displayName: 'End Date',
+						name: 'endDate',
+						type: 'dateTime',
+						default: '',
+						description: 'Optionally pass end date time',
+					},
+				],
 			},
 
 			// ==================== CUSTOMER OPERATIONS ====================
@@ -1299,6 +1370,25 @@ export class Anny implements INodeType {
 					} else if (operation === 'checkOut') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
 						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`);
+					} else if (operation === 'instantBook') {
+						const resourceId = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
+						const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
+						const date = this.getNodeParameter('date', i, '') as string;
+						const additionalFields = this.getNodeParameter('instantBookAdditionalFields', i) as {
+							startDate?: string;
+							endDate?: string;
+						};
+
+						const body: IDataObject = {
+							resource_id: resourceId,
+						};
+
+						if (serviceId) body.service_id = serviceId;
+						if (date) body.date = date;
+						if (additionalFields.startDate) body.start_date = additionalFields.startDate;
+						if (additionalFields.endDate) body.end_date = additionalFields.endDate;
+
+						response = await annyApiRequest.call(this, 'POST', '/api/v1/bookings/instant', {}, body);
 					}
 				}
 
