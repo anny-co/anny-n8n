@@ -63,6 +63,10 @@ export class Anny implements INodeType {
 				noDataExpression: true,
 				options: [
 					{
+						name: 'Availability',
+						value: 'availability',
+					},
+					{
 						name: 'Booking',
 						value: 'booking',
 					},
@@ -103,6 +107,137 @@ export class Anny implements INodeType {
 					show: {
 						resource: ['booking', 'customer', 'invoice', 'order', 'planSubscription', 'resource', 'service'],
 						operation: ['get', 'getAll'],
+					},
+				},
+			},
+
+			// ==================== AVAILABILITY OPERATIONS ====================
+			{
+				displayName: 'Operation',
+				name: 'operation',
+				type: 'options',
+				noDataExpression: true,
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+				options: [
+					{
+						name: 'Get End Times',
+						value: 'getEndTimes',
+						action: 'Get end times',
+						description: 'Get all interval end dates for a start datetime',
+					},
+					{
+						name: 'Get Start Times',
+						value: 'getStartTimes',
+						action: 'Get start times',
+						description: 'Get all interval start dates for a given date',
+					},
+					{
+						name: 'Get Upcoming Intervals',
+						value: 'getUpcomingIntervals',
+						action: 'Get upcoming intervals',
+						description: 'Get a list of upcoming available intervals',
+					},
+				],
+				default: 'getUpcomingIntervals',
+			},
+			// Availability - Service ID (required for all operations)
+			{
+				...serviceSelect,
+				description: 'The service to check availability for',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+			},
+			// Availability - Service Quantity
+			{
+				displayName: 'Service Quantity',
+				name: 'serviceQuantity',
+				type: 'number',
+				default: 1,
+				typeOptions: {
+					minValue: 1,
+				},
+				description: 'Quantity of the service to book',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+			},
+			// Availability - Timezone (required for all operations)
+			{
+				displayName: 'Timezone',
+				name: 'timezone',
+				type: 'string',
+				default: 'Europe/Berlin',
+				required: true,
+				placeholder: 'e.g., Europe/Berlin',
+				description: 'User timezone for availability calculation',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+			},
+			// Availability - Resource ID (optional)
+			{
+				...resourceSelect,
+				required: false,
+				description: 'Optionally filter by specific resource',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+					},
+				},
+			},
+			// Availability - Start Date for getUpcomingIntervals
+			{
+				displayName: 'Start Date',
+				name: 'startDate',
+				type: 'dateTime',
+				default: '',
+				description: 'Start date for pagination (use page_end_date from previous response to get more intervals)',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+						operation: ['getUpcomingIntervals'],
+					},
+				},
+			},
+			// Availability - Date for getStartTimes
+			{
+				displayName: 'Date',
+				name: 'availabilityDate',
+				type: 'string',
+				default: '',
+				placeholder: 'YYYY-MM-DD',
+				required: true,
+				description: 'The date to get start times for (YYYY-MM-DD format)',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+						operation: ['getStartTimes'],
+					},
+				},
+			},
+			// Availability - DateTime for getEndTimes
+			{
+				displayName: 'Start Date Time',
+				name: 'dateTime',
+				type: 'dateTime',
+				default: '',
+				required: true,
+				description: 'The start datetime to get end times for',
+				displayOptions: {
+					show: {
+						resource: ['availability'],
+						operation: ['getEndTimes'],
 					},
 				},
 			},
@@ -1304,8 +1439,40 @@ export class Anny implements INodeType {
 						: false;
 					let response;
 
+					// ==================== AVAILABILITY ====================
+					if (resource === 'availability') {
+						const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
+						const serviceQuantity = this.getNodeParameter('serviceQuantity', i, 1) as number;
+						const timezone = this.getNodeParameter('timezone', i) as string;
+						const resourceIdValue = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
+
+						const qs: Record<string, string | number> = {
+							[`service_id[${serviceId}]`]: serviceQuantity,
+							timezone,
+						};
+
+						if (resourceIdValue) qs.resource_id = resourceIdValue;
+
+						if (operation === 'getUpcomingIntervals') {
+							const startDate = this.getNodeParameter('startDate', i, '') as string;
+							if (startDate) qs.start_date = startDate;
+
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/availability/upcoming-intervals', qs);
+						} else if (operation === 'getStartTimes') {
+							const availabilityDate = this.getNodeParameter('availabilityDate', i) as string;
+							qs.date = availabilityDate;
+
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/start', qs);
+						} else if (operation === 'getEndTimes') {
+							const dateTime = this.getNodeParameter('dateTime', i) as string;
+							qs.date_time = dateTime;
+
+							response = await annyApiRequest.call(this, 'GET', '/api/v1/intervals/end', qs);
+						}
+					}
+
 					// ==================== BOOKING ====================
-					if (resource === 'booking') {
+					else if (resource === 'booking') {
 						if (operation === 'getAll') {
 							const pageSize = this.getNodeParameter('pageSize', i) as number;
 							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
