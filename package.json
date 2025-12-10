@@ -18,6 +18,9 @@
 		"type": "git",
 		"url": "https://github.com/anny-co/anny-n8n.git"
 	},
+	"publishConfig": {
+		"access": "public"
+	},
 	"scripts": {
 		"build": "n8n-node build",
 		"build:watch": "tsc --watch",
