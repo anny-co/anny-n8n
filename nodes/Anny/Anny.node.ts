@@ -1530,10 +1530,10 @@ export class Anny implements INodeType {
 						response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}/cancel`, {}, undefined, {}, true, true);
 					} else if (operation === 'checkIn') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-in`, {}, undefined, {}, true, true);
+						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-in`, {}, {}, {}, true, true);
 					} else if (operation === 'checkOut') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
-						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`, {}, undefined, {}, true, true);
+						response = await annyApiRequest.call(this, 'POST', `/api/v1/bookings/${bookingId}/check-out`, {}, {}, {}, true, true);
 					}
 				}
 
