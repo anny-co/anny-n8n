@@ -53,24 +53,27 @@ export const customFiltersField: INodeProperties = {
 	],
 };
 
-export const returnAllField: INodeProperties = {
-	displayName: 'Return All',
-	name: 'returnAll',
-	type: 'boolean',
-	default: false,
-	description: 'Whether to return all results or only up to a given limit',
-};
-
-export const limitField: INodeProperties = {
-	displayName: 'Limit',
-	name: 'limit',
+export const pageSizeField: INodeProperties = {
+	displayName: 'Page Size',
+	name: 'pageSize',
 	type: 'number',
-	default: 50,
+	default: 30,
 	typeOptions: {
 		minValue: 1,
-		maxValue: 100,
+		maxValue: 30,
 	},
-	description: 'Max number of results to return',
+	description: 'Number of results per page (API maximum is 30)',
+};
+
+export const pageNumberField: INodeProperties = {
+	displayName: 'Page Number',
+	name: 'pageNumber',
+	type: 'number',
+	default: 1,
+	typeOptions: {
+		minValue: 1,
+	},
+	description: 'The page number to retrieve',
 };
 
 export const baseSortField: INodeProperties = {

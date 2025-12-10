@@ -24,8 +24,8 @@ import {
 	invoiceSelect,
 	planSubscriptionSelect,
 	includeField,
-	returnAllField,
-	limitField,
+	pageSizeField,
+	pageNumberField,
 	searchFilter,
 	customFiltersField,
 	baseSortField,
@@ -138,12 +138,6 @@ export class Anny implements INodeType {
 						description: 'Check out a customer from their booking',
 					},
 					{
-						name: 'Create',
-						value: 'create',
-						action: 'Create booking',
-						description: 'Create a new booking',
-					},
-					{
 						name: 'Get',
 						value: 'get',
 						action: 'Get booking',
@@ -183,86 +177,6 @@ export class Anny implements INodeType {
 						operation: ['get'],
 					},
 				},
-			},
-			// Booking Create operation fields
-			{
-				...serviceSelect,
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['create'],
-					},
-				},
-			},
-			{
-				displayName: 'Starts At',
-				name: 'startsAt',
-				type: 'dateTime',
-				default: '',
-				required: true,
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['create'],
-					},
-				},
-				description: 'The start date and time of the booking',
-			},
-			{
-				displayName: 'Ends At',
-				name: 'endsAt',
-				type: 'dateTime',
-				default: '',
-				required: true,
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['create'],
-					},
-				},
-				description: 'The end date and time of the booking',
-			},
-			{
-				displayName: 'Additional Fields',
-				name: 'additionalFields',
-				type: 'collection',
-				placeholder: 'Add Field',
-				default: {},
-				displayOptions: {
-					show: {
-						resource: ['booking'],
-						operation: ['create'],
-					},
-				},
-				options: [
-					{
-						...customerSelect,
-						required: false,
-						description: 'The customer for this booking',
-					},
-					{
-						...resourceSelect,
-						required: false,
-						description: 'The resource (e.g., room, staff) for this booking',
-					},
-					{
-						displayName: 'Notes',
-						name: 'notes',
-						type: 'string',
-						typeOptions: {
-							rows: 3,
-						},
-						default: '',
-						description: 'Additional notes for the booking',
-					},
-					{
-						displayName: 'Instant Booking',
-						name: 'instantBooking',
-						type: 'boolean',
-						default: false,
-						description: 'Whether to create an instant booking (bypasses availability checks)',
-					},
-				],
 			},
 			// Booking Update operation fields
 			{
@@ -318,7 +232,7 @@ export class Anny implements INodeType {
 			},
 			// Booking Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['booking'],
@@ -327,12 +241,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['booking'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -577,7 +490,7 @@ export class Anny implements INodeType {
 			},
 			// Customer Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['customer'],
@@ -586,12 +499,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['customer'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -687,7 +599,7 @@ export class Anny implements INodeType {
 			},
 			// Order Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['order'],
@@ -696,12 +608,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['order'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -797,7 +708,7 @@ export class Anny implements INodeType {
 			},
 			// Invoice Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['invoice'],
@@ -806,12 +717,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['invoice'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -907,7 +817,7 @@ export class Anny implements INodeType {
 			},
 			// Service Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['service'],
@@ -916,12 +826,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['service'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -1017,7 +926,7 @@ export class Anny implements INodeType {
 			},
 			// Resource Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['resource'],
@@ -1026,12 +935,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['resource'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -1127,7 +1035,7 @@ export class Anny implements INodeType {
 			},
 			// Plan Subscription Get Many options
 			{
-				...returnAllField,
+				...pageSizeField,
 				displayOptions: {
 					show: {
 						resource: ['planSubscription'],
@@ -1136,12 +1044,11 @@ export class Anny implements INodeType {
 				},
 			},
 			{
-				...limitField,
+				...pageNumberField,
 				displayOptions: {
 					show: {
 						resource: ['planSubscription'],
 						operation: ['getAll'],
-						returnAll: [false],
 					},
 				},
 			},
@@ -1329,7 +1236,8 @@ export class Anny implements INodeType {
 					// ==================== BOOKING ====================
 					if (resource === 'booking') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.booking;
@@ -1343,24 +1251,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/bookings', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
-								const result = await annyApiRequest.call(this, 'GET', '/api/v1/bookings', qs);
-								response = (result as IDataObject).data || result;
-							}
+							const result = await annyApiRequest.call(this, 'GET', '/api/v1/bookings', qs);
+							response = (result as IDataObject).data || result;
 						} else if (operation === 'get') {
 							const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1369,54 +1273,6 @@ export class Anny implements INodeType {
 							const qs: IDataObject = {};
 							if (include) qs.include = include;
 							response = await annyApiRequest.call(this, 'GET', `/api/v1/bookings/${bookingId}`, qs);
-					} else if (operation === 'create') {
-						const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
-						const startsAt = this.getNodeParameter('startsAt', i) as string;
-						const endsAt = this.getNodeParameter('endsAt', i) as string;
-						const additionalFields = this.getNodeParameter('additionalFields', i) as {
-							customerId?: { value: string } | string;
-							resourceId?: { value: string } | string;
-							notes?: string;
-							instantBooking?: boolean;
-						};
-
-						const attributes: IDataObject = {
-							starts_at: startsAt,
-							ends_at: endsAt,
-						};
-
-						const relationships: IDataObject = {
-							service: {
-								data: { type: 'services', id: serviceId },
-							},
-						};
-
-						if (additionalFields.customerId) {
-							const customerId = typeof additionalFields.customerId === 'object'
-								? additionalFields.customerId.value
-								: additionalFields.customerId;
-							relationships.customer = {
-								data: { type: 'customers', id: customerId },
-							};
-						}
-						if (additionalFields.resourceId) {
-							const resourceId = typeof additionalFields.resourceId === 'object'
-								? additionalFields.resourceId.value
-								: additionalFields.resourceId;
-							relationships.resource = {
-								data: { type: 'resources', id: resourceId },
-							};
-						}
-						if (additionalFields.notes) {
-							attributes.notes = additionalFields.notes;
-						}
-
-						const body = toJsonApiPayload('bookings', attributes, relationships);
-						const endpoint = additionalFields.instantBooking
-							? '/api/v1/bookings/instant'
-							: '/api/v1/bookings';
-
-						response = await annyApiRequest.call(this, 'POST', endpoint, {}, body);
 					} else if (operation === 'update') {
 						const bookingId = this.getNodeParameter('bookingId', i, '', { extractValue: true }) as string;
 						const updateFields = this.getNodeParameter('updateFields', i) as {
@@ -1449,7 +1305,8 @@ export class Anny implements INodeType {
 				// ==================== CUSTOMER ====================
 				else if (resource === 'customer') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.customer;
@@ -1463,24 +1320,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/customers', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
-								const result = await annyApiRequest.call(this, 'GET', '/api/v1/customers', qs);
-								response = (result as IDataObject).data || result;
-							}
+							const result = await annyApiRequest.call(this, 'GET', '/api/v1/customers', qs);
+							response = (result as IDataObject).data || result;
 						} else if (operation === 'get') {
 							const customerId = this.getNodeParameter('customerId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1539,7 +1392,8 @@ export class Anny implements INodeType {
 				// ==================== ORDER ====================
 					else if (resource === 'order') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.order;
@@ -1553,24 +1407,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/orders', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
 							const result = await annyApiRequest.call(this, 'GET', '/api/v1/orders', qs);
 							response = (result as IDataObject).data || result;
-						}
 						} else if (operation === 'get') {
 							const orderId = this.getNodeParameter('orderId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1585,7 +1435,8 @@ export class Anny implements INodeType {
 				// ==================== INVOICE ====================
 					else if (resource === 'invoice') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.invoice;
@@ -1599,24 +1450,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/invoices', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
 							const result = await annyApiRequest.call(this, 'GET', '/api/v1/invoices', qs);
 							response = (result as IDataObject).data || result;
-						}
 						} else if (operation === 'get') {
 							const invoiceId = this.getNodeParameter('invoiceId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1631,7 +1478,8 @@ export class Anny implements INodeType {
 				// ==================== SERVICE ====================
 					else if (resource === 'service') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.service;
@@ -1645,24 +1493,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/services', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
 							const result = await annyApiRequest.call(this, 'GET', '/api/v1/services', qs);
 							response = (result as IDataObject).data || result;
-						}
 						} else if (operation === 'get') {
 							const serviceId = this.getNodeParameter('serviceId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1677,7 +1521,8 @@ export class Anny implements INodeType {
 				// ==================== RESOURCE ====================
 					else if (resource === 'resource') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.resource;
@@ -1691,24 +1536,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/resources', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
 							const result = await annyApiRequest.call(this, 'GET', '/api/v1/resources', qs);
 							response = (result as IDataObject).data || result;
-						}
 						} else if (operation === 'get') {
 							const resourceId = this.getNodeParameter('resourceId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1723,7 +1564,8 @@ export class Anny implements INodeType {
 				// ==================== PLAN SUBSCRIPTION ====================
 					else if (resource === 'planSubscription') {
 						if (operation === 'getAll') {
-							const returnAll = this.getNodeParameter('returnAll', i) as boolean;
+							const pageSize = this.getNodeParameter('pageSize', i) as number;
+							const pageNumber = this.getNodeParameter('pageNumber', i) as number;
 							const include =
 								this.getNodeParameter('include', i, '') as string ||
 								defaultIncludes.planSubscription;
@@ -1737,24 +1579,20 @@ export class Anny implements INodeType {
 							if (include) qs.include = include;
 							if (search) qs['filter[search]'] = search;
 							if (sort) qs.sort = sort;
+							qs['page[size]'] = Math.min(pageSize, 30);
+							qs['page[number]'] = pageNumber;
 
-						// Apply custom filters
-						if (customFilters.filters) {
-							for (const filter of customFilters.filters) {
-								if (filter.key && filter.value) {
-									qs[`filter[${filter.key}]`] = filter.value;
+							// Apply custom filters
+							if (customFilters.filters) {
+								for (const filter of customFilters.filters) {
+									if (filter.key && filter.value) {
+										qs[`filter[${filter.key}]`] = filter.value;
+									}
 								}
 							}
-						}
 
-						if (returnAll) {
-							response = await annyApiRequestAllItems.call(this, '/api/v1/plan-subscriptions', qs);
-						} else {
-							const limit = this.getNodeParameter('limit', i) as number;
-							qs['page[size]'] = Math.min(limit, 30);
 							const result = await annyApiRequest.call(this, 'GET', '/api/v1/plan-subscriptions', qs);
 							response = (result as IDataObject).data || result;
-						}
 						} else if (operation === 'get') {
 							const planSubscriptionId = this.getNodeParameter('planSubscriptionId', i, '', { extractValue: true }) as string;
 							const include =
@@ -1792,46 +1630,4 @@ export class Anny implements INodeType {
 
 		return [returnData];
 	}
-}
-
-interface AnnyApiResponse {
-	data?: unknown[];
-	meta?: {
-		current_page?: number;
-		last_page?: number;
-	};
-	links?: {
-		next?: string;
-	};
-}
-
-async function annyApiRequestAllItems(
-	this: IExecuteFunctions,
-	endpoint: string,
-	qs: Record<string, string | number> = {},
-): Promise<unknown[]> {
-	const returnData: unknown[] = [];
-	let page = 1;
-	const pageSize = 30;
-
-	let responseData: AnnyApiResponse;
-	do {
-		qs['page[number]'] = page;
-		qs['page[size]'] = pageSize;
-		responseData = await annyApiRequest.call(this, 'GET', endpoint, qs) as AnnyApiResponse;
-
-		const data = responseData.data || responseData;
-		if (Array.isArray(data)) {
-			returnData.push(...data);
-		}
-
-		page++;
-	} while (
-		(responseData.meta?.current_page !== undefined &&
-		responseData.meta?.last_page !== undefined &&
-		responseData.meta.current_page < responseData.meta.last_page) ||
-		responseData.links?.next
-	);
-
-	return returnData;
 }
