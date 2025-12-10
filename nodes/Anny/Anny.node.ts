@@ -54,12 +54,6 @@ export class Anny implements INodeType {
 				required: true,
 			},
 		],
-		requestDefaults: {
-			headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/vnd.api+json',
-			},
-		},
 		properties: [
 			// Resource selector
 			{
