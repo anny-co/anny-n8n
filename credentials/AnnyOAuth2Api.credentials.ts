@@ -87,14 +87,6 @@ export class AnnyOAuth2Api implements ICredentialType {
 				'={{$self["region"] === "co" ? "a087a0ba-46c7-4221-8472-8fc16702f84a" : $self["region"] === "eu" ? "a087a108-0c7b-4c09-963d-6e51defeac16" : $self["region"] === "local" ? "a087a15e-6337-48a9-b126-eb861ef48486" : "a087a050-ae57-4f29-923c-efb296462024"}}',
 		},
 		{
-			displayName: 'Client Secret',
-			name: 'clientSecret',
-			type: 'hidden',
-			default:
-				'={{$self["region"] === "co" ? "h73t54ifuwbdlkjasdfsdhvafjal" : $self["region"] === "eu" ? "di723trzoqwilsjdefhsgcassnfc" : $self["region"] === "local" ? "78435irzdhqwljdncfaö" : "2t7riqgkxvrgfjcabsjcewlfhwef"}}',
-			typeOptions: { password: true },
-		},
-		{
 			displayName: 'Organization ID',
 			name: 'organizationId',
 			type: 'hidden',
