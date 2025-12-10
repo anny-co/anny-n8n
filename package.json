@@ -1,5 +1,5 @@
 {
-	"name": "n8n-nodes-anny",
+	"name": "@anny.co/n8n-nodes-anny",
 	"version": "1.0.2",
 	"description": "n8n nodes for the Anny booking platform",
 	"license": "MIT",
